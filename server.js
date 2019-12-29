@@ -22,7 +22,7 @@ server.listen(port, hostname, () => {
 function handleRequest(req, res) {
   // What did we request?
   let pathname = req.url;
-  console.log('requesting' + req.url)
+  //console.log('requesting' + req.url)
   // If blank let's ask for index.html
   if (pathname == '/') {
     pathname = '/client/index.html';

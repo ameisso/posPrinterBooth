@@ -6,6 +6,7 @@ var offlineCanvas;
 var croppedCanvas;
 var ditheredCanvas;
 let snapButton;
+let cutButton;
 const imageWidth = 320;
 const imageHeight = 240;
 
@@ -40,6 +41,10 @@ function setup() {
     snapButton = createButton('snap !');
     snapButton.position(sliderX, 170);
     snapButton.mousePressed(takeSnap);
+
+    cutButton = createButton('cut !');
+    cutButton.position(sliderX + 65, 170);
+    cutButton.mousePressed(cutPaper);
     background(0);
 }
 
@@ -47,7 +52,7 @@ function draw() {
 
     if (capture) {
         var frame = capture.get();
-       //image(frame, 0, 0, imageWidth, imageHeight);
+        //image(frame, 0, 0, imageWidth, imageHeight);
         ditheredCanvas.shader(ditherShader);
         ditherShader.setUniform('tex0', frame);
         ditheredCanvas.fill(255, 255, 0);
@@ -76,7 +81,7 @@ function draw() {
     croppedCanvas.line(0, croppedCanvas.height, croppedCanvas.width, 0);
     croppedCanvas.copy(offlineCanvas, imageWidth - imageHeight, 0, imageWidth, imageWidth, 0, 0, imageWidth, imageWidth);
 
-    image(ditheredCanvas,0, 0);
+    image(ditheredCanvas, 0, 0);
     //  image(offlineCanvas, 2 * imageWidth + 20, 0);
     noStroke();
     fill(127);
@@ -101,6 +106,10 @@ function takeSnap() {
     sendImageToPrinter();
 }
 
+function cutPaper() {
+    socket.emit('cut', {});
+}
+
 function sendImageToPrinter() {
     console.log('send');
     var element = croppedCanvas.elt;
@@ -117,15 +126,8 @@ function sendImageToPrinter() {
 }
 
 function keyPressed() {
-    console.log("pressed" + keyCode);
+    //console.log("pressed" + keyCode);
     if (keyCode == 32) {
         takeSnap();
     }
-    else if (keyCode == 67) {
-        socket.emit('cut', {});
-    }
-}
-
-function mousePressed() {
-    console.log('x ' + mouseX);
 }
