@@ -11,8 +11,8 @@ uniform float desatR;
 uniform float desatG;
 uniform float desatB;
 
-uniform float smoothMin;
-uniform float smoothMax;
+uniform float smoothCenter;
+uniform float smoothDelta;
 
 float nrand( vec2 n )
 {
@@ -34,7 +34,10 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 	vec4 ditheredTex =  texture2D(tex0, uv);
 	float desaturateTex = dot(vec3(desatR,desatG,desatB),vec3(ditheredTex));
 	desaturateTex = pow(1. - desaturateTex,1.);
-   	desaturateTex = smoothstep(smoothMin,smoothMax, desaturateTex);
+
+	float min = smoothCenter-smoothDelta/2.;
+	float max = smoothCenter+smoothDelta/2.;
+   	desaturateTex = smoothstep(min,max, desaturateTex);
     
 	vec3 final = vec3(step(desaturateTex,N)); 
 	fragColor = vec4(final,1);

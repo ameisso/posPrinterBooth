@@ -33,10 +33,10 @@ function setup() {
     gSlider.position(sliderX, 50);
     bSlider = createSlider(0, 100, 11);
     bSlider.position(sliderX, 80);
-    minSlider = createSlider(0, 100, 20);
-    minSlider.position(sliderX, 110);
-    maxSlider = createSlider(0, 100, 50);
-    maxSlider.position(sliderX, 140);
+    centerSlider = createSlider(0, 100, 20);
+    centerSlider.position(sliderX, 110);
+    deltaSlider = createSlider(0, 100, 50);
+    deltaSlider.position(sliderX, 140);
 
     snapButton = createButton('snap !');
     snapButton.position(sliderX, 170);
@@ -60,8 +60,8 @@ function draw() {
         ditherShader.setUniform('desatG', gSlider.value() / 100.);
         ditherShader.setUniform('desatB', bSlider.value() / 100.);
 
-        ditherShader.setUniform('smoothMin', minSlider.value() / 100.);
-        ditherShader.setUniform('smoothMax', maxSlider.value() / 100.);
+        ditherShader.setUniform('smoothCenter', centerSlider.value() / 100.);
+        ditherShader.setUniform('smoothDelta', deltaSlider.value() / 100.);
         ditheredCanvas.rect(-ditheredCanvas.width / 2, -ditheredCanvas.height / 2, ditheredCanvas.width, ditheredCanvas.height);
     }
 
@@ -90,8 +90,8 @@ function draw() {
     drawTextNearSlider('red', rSlider);
     drawTextNearSlider('green', gSlider);
     drawTextNearSlider('blue', bSlider);
-    drawTextNearSlider('smooth Min', minSlider);
-    drawTextNearSlider('smooth Max', maxSlider);
+    drawTextNearSlider('smooth center', centerSlider);
+    drawTextNearSlider('smooth delta', deltaSlider);
     //image(croppedCanvas, 3 * imageWidth + 30, 0);
 
 }
