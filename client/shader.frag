@@ -14,6 +14,8 @@ uniform float desatB;
 uniform float smoothCenter;
 uniform float smoothDelta;
 
+uniform bool invert;
+
 float nrand( vec2 n )
 {
 	return fract(sin(dot(n.xy, vec2(12.9898, 78.233)))* 43758.5453 * (0.1+.001));
@@ -40,7 +42,13 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
    	desaturateTex = smoothstep(min,max, desaturateTex);
     
 	vec3 final = vec3(step(desaturateTex,N)); 
+if (invert){
+	fragColor = vec4(1.-final,1);
+}
+else
+{
 	fragColor = vec4(final,1);
+}
 }
 
 void main(void) {

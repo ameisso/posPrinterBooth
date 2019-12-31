@@ -7,6 +7,7 @@ var croppedCanvas;
 var ditheredCanvas;
 let snapButton;
 let cutButton;
+let invertBox;
 const imageWidth = 320;
 const imageHeight = 240;
 
@@ -19,7 +20,7 @@ function preload() {
 
 function setup() {
     //globalCanvas = createCanvas(imageHeight, imageWidth);
-    globalCanvas = createCanvas(2000, 320);
+    globalCanvas = createCanvas(2000, 240);
     offlineCanvas = createGraphics(imageWidth, imageWidth);
     croppedCanvas = createGraphics(imageHeight, imageWidth);
 
@@ -33,9 +34,9 @@ function setup() {
     gSlider.position(sliderX, 50);
     bSlider = createSlider(0, 100, 11);
     bSlider.position(sliderX, 80);
-    centerSlider = createSlider(0, 100, 20);
+    centerSlider = createSlider(0, 100, 80);
     centerSlider.position(sliderX, 110);
-    deltaSlider = createSlider(0, 100, 50);
+    deltaSlider = createSlider(0, 100, 20);
     deltaSlider.position(sliderX, 140);
 
     snapButton = createButton('snap !');
@@ -45,6 +46,9 @@ function setup() {
     cutButton = createButton('cut !');
     cutButton.position(sliderX + 65, 170);
     cutButton.mousePressed(cutPaper);
+
+    invertBox = createCheckbox('invert', false);
+    invertBox.position(sliderX + 125, 170);
     background(0);
 }
 
@@ -62,6 +66,7 @@ function draw() {
 
         ditherShader.setUniform('smoothCenter', centerSlider.value() / 100.);
         ditherShader.setUniform('smoothDelta', deltaSlider.value() / 100.);
+        ditherShader.setUniform('invert',invertBox.checked());
         ditheredCanvas.rect(-ditheredCanvas.width / 2, -ditheredCanvas.height / 2, ditheredCanvas.width, ditheredCanvas.height);
     }
 
@@ -93,6 +98,12 @@ function draw() {
     drawTextNearSlider('smooth center', centerSlider);
     drawTextNearSlider('smooth delta', deltaSlider);
     //image(croppedCanvas, 3 * imageWidth + 30, 0);
+    stroke(255,0,0);
+    line(0,140,320,140);
+
+
+
+
 
 }
 
