@@ -68,8 +68,8 @@ io.sockets.on('connection',
       function (data) {
         fs.readdir('photos', (error, files) => {
           let totalFiles = 0;
-         totalFiles = files.length; // return the number of files
-         
+          totalFiles = files.length; // return the number of files
+
           console.log('fileCount ' + totalFiles); // print the total number of files
           var imagePath = 'photos/' + totalFiles + '.png';
           var base64Data = JSON.stringify(data.image).substr(22);
@@ -127,22 +127,29 @@ function printQRCode() {
 
 function printImage(path) {
 
-  console.log('printing image ' + path);
-  escpos.Image.load(path, 'image/png', function (image) {
-    // console.log('size ' + JSON.stringify(image.size))
-    printer.align('ct')
-    // printer.image(image)
-    // printer.image(image, 'd8')
-    //printer.image(image, 's24')
-    // printer.image(image, 'd24')
+  if (printer !== null) {
+    console.log('printing image ' + path);
+    escpos.Image.load(path, 'image/png', function (image) {
+      // console.log('size ' + JSON.stringify(image.size))
+      printer.align('ct')
+      // printer.image(image)
+      // printer.image(image, 'd8')
+      //printer.image(image, 's24')
+      // printer.image(image, 'd24')
 
-    printer.raster(image)
-    //printer.raster(image, 'dw')
-    // printer.raster(image, 'dh')
+      printer.raster(image)
+      //printer.raster(image, 'dw')
+      // printer.raster(image, 'dh')
 
-    //printer.raster(image, 'dwdh')
-    // printer.cut();
-    printer.flush();
-    // printer.close();
-  });
+      //printer.raster(image, 'dwdh')
+      // printer.cut();
+      printer.flush();
+      // printer.close();
+      printer
+    });
+  }
+  else
+  {
+    console.log('printer disconnected');
+  }
 }
