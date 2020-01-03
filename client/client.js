@@ -28,16 +28,12 @@ function setup() {
     socket = io.connect();
 
     let sliderX = 1 * imageWidth + 20;
-    rSlider = createSlider(0, 100, 30);
-    rSlider.position(sliderX, 20);
-    gSlider = createSlider(0, 100, 59);
-    gSlider.position(sliderX, 50);
-    bSlider = createSlider(0, 100, 11);
-    bSlider.position(sliderX, 80);
+    desatSlider = createSlider(0, 100, 50);
+    desatSlider.position(sliderX, 20);
     centerSlider = createSlider(0, 100, 80);
-    centerSlider.position(sliderX, 110);
+    centerSlider.position(sliderX, 50);
     deltaSlider = createSlider(0, 100, 20);
-    deltaSlider.position(sliderX, 140);
+    deltaSlider.position(sliderX, 80);
 
     snapButton = createButton('snap !');
     snapButton.position(sliderX, 170);
@@ -48,7 +44,10 @@ function setup() {
     cutButton.mousePressed(cutPaper);
 
     invertBox = createCheckbox('invert', false);
-    invertBox.position(sliderX + 125, 170);
+    invertBox.position(sliderX, 110);
+
+    flipBox = createCheckbox('flip', true);
+    flipBox.position(sliderX, 140);
     background(0);
 }
 
@@ -60,13 +59,12 @@ function draw() {
         ditheredCanvas.shader(ditherShader);
         ditherShader.setUniform('tex0', frame);
         ditheredCanvas.fill(255, 255, 0);
-        ditherShader.setUniform('desatR', rSlider.value() / 100.);
-        ditherShader.setUniform('desatG', gSlider.value() / 100.);
-        ditherShader.setUniform('desatB', bSlider.value() / 100.);
+        ditherShader.setUniform('desat', desatSlider.value() / 100.);
 
         ditherShader.setUniform('smoothCenter', centerSlider.value() / 100.);
         ditherShader.setUniform('smoothDelta', deltaSlider.value() / 100.);
         ditherShader.setUniform('invert',invertBox.checked());
+        ditherShader.setUniform('flip',flipBox.checked());
         ditheredCanvas.rect(-ditheredCanvas.width / 2, -ditheredCanvas.height / 2, ditheredCanvas.width, ditheredCanvas.height);
     }
 
@@ -92,9 +90,7 @@ function draw() {
     fill(127);
     rect(1 * imageWidth, 0, 250, 320);
     fill(255);
-    drawTextNearSlider('red', rSlider);
-    drawTextNearSlider('green', gSlider);
-    drawTextNearSlider('blue', bSlider);
+    drawTextNearSlider('desat', desatSlider);
     drawTextNearSlider('smooth center', centerSlider);
     drawTextNearSlider('smooth delta', deltaSlider);
     //image(croppedCanvas, 3 * imageWidth + 30, 0);

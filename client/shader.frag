@@ -7,14 +7,13 @@ varying vec2 vTexCoord;
 
 // our texture coming from p5
 uniform sampler2D tex0;
-uniform float desatR;
-uniform float desatG;
-uniform float desatB;
+uniform float desat;
 
 uniform float smoothCenter;
 uniform float smoothDelta;
 
 uniform bool invert;
+uniform bool flip;
 
 float nrand( vec2 n )
 {
@@ -34,7 +33,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 	float N = n1rand(uv * 2.3);
  
 	vec4 ditheredTex =  texture2D(tex0, uv);
-	float desaturateTex = dot(vec3(desatR,desatG,desatB),vec3(ditheredTex));
+	float desaturateTex = dot(vec3(0.3*desat,0.59*desat,0.11*desat),vec3(ditheredTex));
 	desaturateTex = pow(1. - desaturateTex,1.);
 
 	float min = smoothCenter-smoothDelta/2.;
