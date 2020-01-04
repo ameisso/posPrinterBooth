@@ -1,10 +1,10 @@
 let socket;
 let ditherShader;
-var capture;
-var globalCanvas;
-var offlineCanvas;
-var croppedCanvas;
-var ditheredCanvas;
+let capture;
+let globalCanvas;
+let offlineCanvas;
+let croppedCanvas;
+let ditheredCanvas;
 let snapButton;
 let cutButton;
 let invertBox;
