@@ -46,7 +46,7 @@ function setup() {
     invertBox = createCheckbox('invert', false);
     invertBox.position(sliderX, 110);
 
-    flipBox = createCheckbox('flip', true);
+    flipBox = createCheckbox('flip', false);
     flipBox.position(sliderX, 140);
     background(0);
 }

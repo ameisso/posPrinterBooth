@@ -13,7 +13,6 @@ uniform float smoothCenter;
 uniform float smoothDelta;
 
 uniform bool invert;
-uniform bool flip;
 
 float nrand( vec2 n )
 {
