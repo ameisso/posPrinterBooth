@@ -90,29 +90,32 @@ io.sockets.on('connection',
 
 function cutPaper() {
   console.log('cut');
-  printer.cut();
-  printer.flush();
-
+  device = new escpos.Network(printerIP);
+  options = { encoding: "Cp850" }
+  printer = new escpos.Printer(device, options);
+  device.open(function (err) {
+    if (err) {
+      console.log('error in connection' + err.message)
+    }
+    else {
+      printer.cut();
+      printer.flush();
+      printer.close();
+    }
+  });
 }
 
 
 
-const device = new escpos.Network(printerIP);
-const options = { encoding: "Cp850" }
-const printer = new escpos.Printer(device, options);
-
-device.open(function (err) {
-  if (err && err.stack && err.message) {
-    console.log('error in connection')
-  }
-  else {
-    console.log('printer connected');
-  }
-});
+let device = new escpos.Network(printerIP);
+let options = { encoding: "Cp850" }
+let printer = new escpos.Printer(device, options);
 
 
 function printQRCode() {
-
+  device = new escpos.Network(printerIP);
+  options = { encoding: "Cp850" }
+  printer = new escpos.Printer(device, options);
   printer
     .font('a')
     .align('ct')
@@ -126,30 +129,40 @@ function printQRCode() {
 
 
 function printImage(path) {
+  console.log('printing image ' + path);
+  device = new escpos.Network(printerIP);
+  options = { encoding: "Cp850" }
+  printer = new escpos.Printer(device, options);
+  device.open(function (err) {
+    if (err) {
+      console.log('error in connection' + err.message)
+    }
+    else {
+      console.log('printer connected');
+      escpos.Image.load(path, 'image/png', function (image) {
+        printer.align('ct')
+        printer.raster(image)
+        printer.close();
+      });
+    }
+  });
 
-  if (printer !== null) {
-    console.log('printing image ' + path);
-    escpos.Image.load(path, 'image/png', function (image) {
-      // console.log('size ' + JSON.stringify(image.size))
-      printer.align('ct')
-      // printer.image(image)
-      // printer.image(image, 'd8')
-      //printer.image(image, 's24')
-      // printer.image(image, 'd24')
 
-      printer.raster(image)
-      //printer.raster(image, 'dw')
-      // printer.raster(image, 'dh')
-
-      //printer.raster(image, 'dwdh')
-      // printer.cut();
-      printer.flush();
-      // printer.close();
-      printer
-    });
-  }
-  else
-  {
-    console.log('printer disconnected');
-  }
 }
+
+  // escpos.Image.load(path, 'image/png', function (image) {
+  // console.log('size ' + JSON.stringify(image.size))
+  //printer.align('ct')
+  // printer.image(image)
+  // printer.image(image, 'd8')
+  //printer.image(image, 's24')
+  // printer.image(image, 'd24')
+
+  //printer.raster(image)
+  //printer.raster(image, 'dw')
+  // printer.raster(image, 'dh')
+
+  //printer.raster(image, 'dwdh')
+  // printer.cut();
+  //printer.flush();
+  //printer.close();
